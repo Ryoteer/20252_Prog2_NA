@@ -11,6 +11,11 @@ public class PlayerAvatar : MonoBehaviour
         _parent = GetComponentInParent<PlayerBehaviour>();
     }
 
+    public void Attack()
+    {
+        _parent.Attack();
+    }
+
     public void Jump()
     {
         _parent.Jump();

@@ -1950,7 +1950,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &5525304749002892133
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1963,12 +1963,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 389c2ebaf491201499b90fd555b18b4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _attackTriggerName: onAttack
   _groundBoolName: isGrounded
   _jumpTriggerName: onJump
+  _moveBoolName: isMoving
   _xFloatName: xAxis
   _zFloatName: zAxis
+  _attackKey: 323
   _jumpKey: 32
+  _attackDistance: 1
+  _attackMask:
+    serializedVersion: 2
+    m_Bits: 64
+  _attackOrigin: {fileID: 5855583556324863618}
+  _groundDistance: 0.25
+  _groundMask:
+    serializedVersion: 2
+    m_Bits: 1073741824
   _jumpForce: 5
+  _moveDistance: 0.25
+  _moveMask:
+    serializedVersion: 2
+    m_Bits: 2147483648
   _moveSpeed: 3.5
 --- !u!1 &3411267578619998065
 GameObject:
