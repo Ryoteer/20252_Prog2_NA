@@ -31,6 +31,7 @@ public class PlayerBehaviour : MonoBehaviour
     private bool _isGrounded = true, _isBlocked;
 
     private Animator _animator;
+    private PlayerAvatar _avatar;
     private Rigidbody _rb;
 
     private Ray _attackRay, _groundRay, _moveRay;
@@ -48,10 +49,13 @@ public class PlayerBehaviour : MonoBehaviour
     private void Start()
     {
         _animator = GetComponentInChildren<Animator>();
+        _avatar = GetComponentInChildren<PlayerAvatar>();
     }
 
     private void Update()
     {
+        _animator.SetLayerWeight(1, _avatar.legsLayerWeight);
+
         _moveInputs.x = Input.GetAxis("Horizontal");
         _animator.SetFloat(_xFloatName, _moveInputs.x);
         _moveInputs.y = Input.GetAxis("Vertical");
@@ -89,20 +93,12 @@ public class PlayerBehaviour : MonoBehaviour
     {
         _attackRay = new Ray(_attackOrigin.position, transform.forward);
 
-        if(Physics.SphereCast(_attackRay, 0.25f, out _attackHit, _attackDistance, _attackMask))
+        if(Physics.Raycast(_attackRay, out _attackHit, _attackDistance, _attackMask))
         {
             if(_attackHit.collider.TryGetComponent(out IDamage damage))
             {
                 damage.TakeDamage();
             }
-            else
-            {
-                Debug.Log($":(");
-            }
-        }
-        else
-        {
-            Debug.Log($":( :(");
         }
     }
 
@@ -136,7 +132,8 @@ public class PlayerBehaviour : MonoBehaviour
     {
         Gizmos.color = Color.blue;
         Gizmos.DrawRay(_groundRay.origin, _groundRay.direction * _groundDistance);
-        Gizmos.color = Color.red;
         Gizmos.DrawRay(_moveRay.origin, _moveRay.direction * _moveDistance);
+        Gizmos.color = Color.red;
+        Gizmos.DrawRay(_attackRay.origin, _attackRay.direction * _attackDistance);
     }
 }
