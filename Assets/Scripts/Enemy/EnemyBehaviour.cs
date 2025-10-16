@@ -5,21 +5,28 @@ using UnityEngine.AI;
 
 public class EnemyBehaviour : MonoBehaviour, IDamage
 {
-    [SerializeField] private Transform _target;
-    [SerializeField] private Transform[] _patrolNodes;
+    [Header("<color=yellow>AI</color>")]
     [SerializeField] private float _chaseDistance = 7.5f;
 
-    private NavMeshAgent _agent;
     private Transform _actualTarget;
+    private NavMeshAgent _agent;
+    private List<Transform> _patrolNodes = new();
+    private Transform _target;
 
     private void Awake()
     {
+        GameManager.Instance.AddEnemy(this);
+
         _agent = GetComponent<NavMeshAgent>();
     }
 
     private void Start()
     {
-        _actualTarget = _patrolNodes[Random.Range(0, _patrolNodes.Length)];
+        _target = GameManager.Instance.Player.transform;
+        _patrolNodes = GameManager.Instance.AgentNodes;
+
+        _actualTarget = _patrolNodes[Random.Range(0, _patrolNodes.Count)];
+        Debug.Log($"Selected node: {_actualTarget.gameObject.name}.");
         _agent.SetDestination(_actualTarget.position);
     }
 
@@ -38,7 +45,8 @@ public class EnemyBehaviour : MonoBehaviour, IDamage
 
             if((transform.position - _actualTarget.position).sqrMagnitude < 0.25f * 0.25f)
             {
-                _actualTarget = _patrolNodes[Random.Range(0, _patrolNodes.Length)];
+                _actualTarget = _patrolNodes[Random.Range(0, _patrolNodes.Count)];
+                Debug.Log($"Selected node: {_actualTarget.gameObject.name}.");
                 _agent.SetDestination(_actualTarget.position);
             }
         }

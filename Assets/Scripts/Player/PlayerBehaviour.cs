@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerBehaviour : MonoBehaviour
 {
-    [Header("Animator")]
+    [Header("<color=blue>Animator</color>")]
     [SerializeField] private string _attackTriggerName = "onAttack";
     [SerializeField] private string _groundBoolName = "isGrounded";
     [SerializeField] private string _jumpTriggerName = "onJump";
@@ -13,11 +13,11 @@ public class PlayerBehaviour : MonoBehaviour
     [SerializeField] private string _xFloatName = "xAxis";
     [SerializeField] private string _zFloatName = "zAxis";
 
-    [Header("Inputs")]
+    [Header("<color=blue>Inputs</color>")]
     [SerializeField] private KeyCode _attackKey = KeyCode.Mouse0;
     [SerializeField] private KeyCode _jumpKey = KeyCode.Space;
 
-    [Header("Physics")]
+    [Header("<color=blue>Physics</color>")]
     [SerializeField] private float _attackDistance = 0.25f;
     [SerializeField] private LayerMask _attackMask;
     [SerializeField] private Transform _attackOrigin;
@@ -40,10 +40,12 @@ public class PlayerBehaviour : MonoBehaviour
     private RaycastHit _attackHit;
 
     private Vector2 _moveInputs = new();
-    private Vector3 _dirFix = new(), _camForwardFix = new(), _camRightFix = new(), _moveDir = new(), _transformOffset = new();
+    private Vector3 _camForwardFix = new(), _camRightFix = new(), _moveDir = new(), _transformOffset = new();
 
     private void Awake()
     {
+        GameManager.Instance.Player = this;
+
         _rb = GetComponent<Rigidbody>();
         _rb.constraints = RigidbodyConstraints.FreezeRotation;
     }
