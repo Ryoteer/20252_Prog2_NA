@@ -13,6 +13,13 @@ public class PlayerBehaviour : MonoBehaviour
     [SerializeField] private string _xFloatName = "xAxis";
     [SerializeField] private string _zFloatName = "zAxis";
 
+    [Header("<color=blue>Audio</color>")]
+    [SerializeField] private AudioSource _generalSource;
+    [SerializeField] private AudioClip[] _attackClips;
+    [SerializeField] private AudioSource _movementSource;
+    [SerializeField] private AudioClip[] _jumpClips;
+    [SerializeField] private AudioClip[] _stepClips;
+
     [Header("<color=blue>Inputs</color>")]
     [SerializeField] private KeyCode _attackKey = KeyCode.Mouse0;
     [SerializeField] private KeyCode _jumpKey = KeyCode.Space;
@@ -30,7 +37,7 @@ public class PlayerBehaviour : MonoBehaviour
 
     private bool _isGrounded = true, _isBlocked;
 
-    private Animator _animator;
+    private Animator _animator;    
     private PlayerAvatar _avatar;
     private Rigidbody _rb;
     private Transform _camTransform;
@@ -139,6 +146,45 @@ public class PlayerBehaviour : MonoBehaviour
         _moveDir = (_camRightFix * input.x + _camForwardFix * input.y).normalized;
 
         _rb.MovePosition(transform.position + _moveDir * _moveSpeed * Time.fixedDeltaTime);
+    }
+
+    public void PlayAttackClip()
+    {
+        if (_generalSource.isPlaying)
+        {
+            _generalSource.Stop();
+        }
+
+        _generalSource.clip = _attackClips[Random.Range(0, _attackClips.Length)];
+
+        _generalSource.Play();
+    }
+
+    public void PlayJumpClip(int state)
+    {
+        if (_movementSource.isPlaying)
+        {
+            _movementSource.Stop();
+        }
+
+        if(state >= _jumpClips.Length) state = _jumpClips.Length - 1;
+        else if (state < 0) state = 0;
+
+        _movementSource.clip = _jumpClips[state];
+
+        _movementSource.Play();
+    }
+
+    public void PlayStepClip()
+    {
+        if (_movementSource.isPlaying)
+        {
+            _movementSource.Stop();
+        }
+
+        _movementSource.clip = _stepClips[Random.Range(0, _stepClips.Length)];
+
+        _movementSource.Play();
     }
 
     private void Rotate(Vector3 forward)
